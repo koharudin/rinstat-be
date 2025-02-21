@@ -1,0 +1,15 @@
+{
+  "name": "nodejs-docker",
+  "version": "1.0.0",
+  "description": "A simple Node.js app in Docker Compose",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "express": "^4.17.1",
+    "nodemon": "^3.1.9"
+  }
+}
