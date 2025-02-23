@@ -4,6 +4,8 @@ const router = express.Router()
 const client = require("./client_db") // Import the client from db-client.js
 const do_paginate = require("./paginate");
 
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 // Rute untuk mendapatkan semua pengguna
 router.get("/", (req, res) => {
   res.send("List of users")
@@ -12,6 +14,7 @@ router.get("/get-all-count-downloads", async (req, res) => {
   res.send({ total: 540033 })
 })
 router.get("/list-new-user-affiliation", async (req, res) => {
+    //await  sleep(5000);
     const sql = "select * from test.user_affiliation";
     console.log("params page "+ req.query.page)
     const paginateData = await do_paginate(client,sql,req.query.page);
