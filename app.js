@@ -1,8 +1,17 @@
 // app.js
 const express = require("express")
 const axios = require("axios")
+const cors = require("cors")
 const app = express()
+
+const rinEndpoints = require("./rin_endpoints")
 const port = 3000
+
+// Allow all origins
+app.use(cors()); // This will allow requests from any origin
+
+// Menggunakan router untuk rute yang berhubungan dengan pengguna
+app.use("/rin", rinEndpoints)
 
 app.get("/", (req, res) => {
   res.send("RIN Stat backend!!!")
