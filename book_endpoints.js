@@ -6,6 +6,7 @@ const prisma = require("./prisma_client")
 const do_paginate = require("./paginate")
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+const { PrismaClientKnownRequestError } = require('@prisma/client');
 
 // Rute untuk mendapatkan semua pengguna
 router.get("/", async (req, res) => {
@@ -45,11 +46,21 @@ router.get("/:id/update", async (req, res) => {
 })
 router.get("/:id/delete", async (req, res) => {
   const { id } = req.params
-  const book = await prisma.Book.delete({
-    where: {
-      id: parseInt(id),
+  try {
+    const cekBook = await prisma.Book.findUniqueOrThrow({
+      where: {
+        id: parseInt(id),
+      },
+    })
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      // Handle Prisma-specific error
+      console.error("Prisma error:xxx")
+      res.send({message:"Data tidak ditemukan"});
+    } else {
+      console.error("Record not found!")
     }
-  })
-  res.send(book)
+  }
 })
+
 module.exports = router
