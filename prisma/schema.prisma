@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model user_affiliation {
+  month_year  String?  @db.VarChar
+  affiliation String?  @db.VarChar
+  number      Int      @default(123)
+  is_valid3   Boolean? @default(true)
+
+  @@ignore
+}
+
+model Book {
+  id        Int       @id @default(autoincrement())
+  name      String
+  deletedAt DateTime? @db.Timestamp // Field to track soft delete (nullable)
+
+  authorId  Author? @relation(fields: [author_id], references: [id])
+  author_id Int?
+
+  @@map("books")
+}
+
+model Author {
+  id   Int    @id @default(autoincrement())
+  Book Book[]
+
+  @@map("authors")
+}
