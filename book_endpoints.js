@@ -52,6 +52,12 @@ router.get("/:id/delete", async (req, res) => {
         id: parseInt(id),
       },
     })
+    const deletedRecord = await prisma.Book.delete({
+      where : { 
+        id : parseInt(id)
+      }
+    })
+    res.send({message:"Data deleted",data:deletedRecord})
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       // Handle Prisma-specific error
